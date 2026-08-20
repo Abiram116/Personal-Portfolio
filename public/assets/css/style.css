@@ -374,7 +374,7 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
   /* text | ascii object | portrait — the ascii shape lives in what used to be
      dead gap space between the copy and the photo, not stacked on top of
      either. */
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 440px) minmax(210px, 330px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px) minmax(225px, 360px);
   gap: clamp(20px, 4vw, 56px);
   align-items: center;
 }
@@ -382,7 +382,12 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
 /* grid items default to min-width:auto (their content's intrinsic width),
    which lets the headline overflow into the ascii column instead of
    wrapping when that column claims more space. */
-.hero-copy { min-width: 0; }
+/* position+z-index, not just DOM order: .ascii-stage is a positioned
+   sibling (position:relative for its own bleed/overflow), and a positioned
+   element at z-index:0 paints above unpositioned in-flow content no matter
+   what the z-index number says — without this the copy rendered BEHIND the
+   ascii shape instead of in front of it. */
+.hero-copy { min-width: 0; position: relative; z-index: 1; }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 9px;
@@ -399,7 +404,7 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
   font-weight: 900;
   font-variation-settings: "wdth" 105;
   margin-bottom: 26px;
-  max-width: 13ch;
+  max-width: 15ch;
 }
 .hero-line { display: block; }
 
@@ -451,16 +456,15 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
 /* ASCII loop — centred behind the hero as a watermark, tinted with the
    theme colours via background-clip on the generated <pre>. */
 .ascii-stage {
-  /* A real grid item now (the middle column of .hero-grid), centred between
-     the copy and the portrait, rather than an absolutely-positioned overlay
-     fighting either for space. Stretches to the full row height and is never
-     clipped — the black scene background IS the canvas, so there's no edge
-     for the rotating knot to be cut off by. */
+  /* Wider than its own grid column and bled left/right via negative
+     margins so it reaches behind both the copy and the portrait — z-index:0
+     keeps it behind both, so the bleed reads as depth, not clutter. */
   position: relative;
-  width: 100%;
-  height: 100%;
-  margin-left: clamp(8px, 2vw, 28px);
-  align-self: stretch;
+  width: 280%;
+  height: 122%;
+  margin-left: -62%;
+  margin-right: -118%;
+  align-self: center;
   z-index: 0;
   pointer-events: none;
   will-change: transform;
@@ -798,6 +802,7 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
 .f-status {
   display: inline-flex;
   align-items: stretch;
+  max-width: 100%;
   border: 2.5px solid rgba(253,251,245,.28);
 }
 .f-status > * {
@@ -837,9 +842,15 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
   white-space: nowrap;
 }
 
-/* giant wordmark that leans away from the cursor */
+/* giant wordmark that leans away from the cursor — always one line, at any
+   viewport width. flex-wrap:wrap plus a vw-only font-size let the last
+   letter drop to its own row on plenty of real phones (the 10-letter,
+   125%-wide string doesn't reliably fit under ~380px). nowrap plus a
+   font-size formula sized for the actual content (10 letters, ~0.62em
+   advance each at this weight/tracking) guarantees it always fits. */
 .f-wordmark {
   display: flex; justify-content: space-between;
+  flex-wrap: nowrap;
   margin: clamp(28px, 6vw, 70px) 0 22px;
   user-select: none;
 }
@@ -847,12 +858,15 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
   font-family: var(--font-display);
   font-variation-settings: "wdth" 125;
   font-weight: 900;
-  font-size: clamp(2.2rem, 10.5vw, 10rem);
+  font-size: clamp(2.2rem, 9vw, 10rem);
   line-height: .8;
   letter-spacing: -.04em;
   color: var(--paper);
   transition: transform .55s var(--ease-out), color .3s ease;
   will-change: transform;
+}
+@media (max-width: 420px) {
+  .f-letter { font-variation-settings: "wdth" 100; font-size: 8.2vw; letter-spacing: -.03em; }
 }
 .f-letter:nth-child(3n)   { color: var(--lime); }
 .f-letter:nth-child(4n+1) { color: var(--magenta); }
@@ -871,7 +885,17 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
 
 @media (max-width: 620px) {
   .f-top { flex-direction: column; }
-  .f-wordmark { flex-wrap: wrap; justify-content: flex-start; gap: 2px; }
+}
+
+@media (max-width: 400px) {
+  /* the status bar's four cells (padding + tabular time + tz + note) don't
+     fit a narrow phone at full size — they were clipping past the edge
+     instead of wrapping, since inline-flex sizes to its unwrapped content. */
+  .f-status > * { padding: 9px 10px; }
+  .f-status .f-dot-cell { padding-right: 8px; }
+  .f-time { font-size: .78rem; }
+  .f-tz { font-size: .58rem; letter-spacing: .1em; }
+  .f-note { font-size: .58rem; letter-spacing: .08em; }
 }
 
 /* ============================================================
@@ -939,13 +963,29 @@ body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
   border: var(--border); box-shadow: var(--shadow);
   cursor: pointer; font: inherit; text-align: left;
   transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .2s ease;
+  /* flex items default to min-width:auto (their unwrapped content width) —
+     without this the button can't shrink to the container and just runs
+     past the screen edge on narrow phones */
+  min-width: 0;
+  max-width: 100%;
 }
 .contact-mail:hover { transform: translate(-3px,-3px); box-shadow: 10px 10px 0 var(--ink); background: var(--lime); }
 .contact-mail:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--ink); }
+@media (max-width: 400px) {
+  .contact-mail { padding: 14px 16px; }
+}
 
 .contact-mail-text {
   font-family: var(--font-display); font-variation-settings: "wdth" 108;
-  font-weight: 900; font-size: clamp(1rem, 2.3vw, 1.6rem); letter-spacing: -.02em;
+  font-weight: 900; letter-spacing: -.02em;
+  /* one line, always — the font shrinks to fit instead of wrapping. A
+     wrapped email reads worse than a smaller one. */
+  font-size: clamp(.68rem, 3.9vw, 1.6rem);
+  white-space: nowrap;
+  max-width: 100%;
+}
+@media (min-width: 480px) {
+  .contact-mail-text { font-size: clamp(1rem, 2.3vw, 1.6rem); }
 }
 .contact-mail-hint {
   font-family: var(--font-mono); font-size: .64rem;

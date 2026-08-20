@@ -17,6 +17,16 @@ export default function useSiteMotion(enabled: boolean) {
     if (!enabled) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // Every purely decorative pointer-follow effect below (portrait tilt,
+    // card tilt, magnetic buttons, hero parallax) is off at mobile widths,
+    // full stop — width alone, not pointer type. Pointer-type detection
+    // (pointer:fine) is unreliable here: a touchscreen laptop or a desktop
+    // window just resized narrow can still report a fine pointer, and the
+    // tilt then keeps running exactly where it looks worst. 900px matches
+    // the site's real mobile breakpoint (nav switches to the hamburger,
+    // the ASCII scene disables) rather than an arbitrary number.
+    const fine = window.matchMedia('(min-width: 901px)').matches;
+
     /* ---------- Smooth scroll on the GSAP ticker ---------- */
     const lenis = new Lenis({
       duration: 1.1,
@@ -45,6 +55,13 @@ export default function useSiteMotion(enabled: boolean) {
         // viewport and lands past the footer on empty space
         const max = document.documentElement.scrollHeight - window.innerHeight;
         lenis.scrollTo(Math.max(max, 0), { duration: 1.3 });
+        return;
+      }
+      if (id === '#top') {
+        // the -80 offset below exists to clear the fixed nav for section
+        // targets further down the page — applied to #top it just stops the
+        // "back to top" scroll 80px short of the actual top instead.
+        lenis.scrollTo(0, { duration: 1.2 });
         return;
       }
       lenis.scrollTo(target as HTMLElement, { offset: -80, duration: 1.2 });
@@ -102,7 +119,7 @@ export default function useSiteMotion(enabled: boolean) {
          it slides the opposite way, so the photo feels like a physical object
          being looked at rather than a flat image. */
       const portrait = document.querySelector<HTMLElement>('.hero-portrait');
-      if (portrait) {
+      if (portrait && fine) {
         const rx = gsap.quickTo(portrait, 'rotationX', { duration: 0.7, ease: 'power3.out' });
         const ry = gsap.quickTo(portrait, 'rotationY', { duration: 0.7, ease: 'power3.out' });
         const px = gsap.quickTo(portrait, 'x', { duration: 0.9, ease: 'power3.out' });
@@ -148,18 +165,20 @@ export default function useSiteMotion(enabled: boolean) {
         const cx = copy ? gsap.quickTo(copy, 'x', { duration: 1.3, ease: 'power3.out' }) : null;
         const cy = copy ? gsap.quickTo(copy, 'y', { duration: 1.3, ease: 'power3.out' }) : null;
 
-        const onPointer = (e: PointerEvent) => {
-          if (!heroVisible) return;
-          const nx = (e.clientX / window.innerWidth) * 2 - 1;
-          const ny = (e.clientY / window.innerHeight) * 2 - 1;
-          // far layer travels more, near layer barely moves — that is the depth cue
-          sx?.(nx * -10);
-          sy?.(ny * -7);
-          cx?.(nx * 9);
-          cy?.(ny * 6);
-        };
-        window.addEventListener('pointermove', onPointer, { passive: true });
-        heroCleanup.push(() => window.removeEventListener('pointermove', onPointer));
+        if (fine) {
+          const onPointer = (e: PointerEvent) => {
+            if (!heroVisible) return;
+            const nx = (e.clientX / window.innerWidth) * 2 - 1;
+            const ny = (e.clientY / window.innerHeight) * 2 - 1;
+            // far layer travels more, near layer barely moves — that is the depth cue
+            sx?.(nx * -10);
+            sy?.(ny * -7);
+            cx?.(nx * 9);
+            cy?.(ny * 6);
+          };
+          window.addEventListener('pointermove', onPointer, { passive: true });
+          heroCleanup.push(() => window.removeEventListener('pointermove', onPointer));
+        }
 
         // and it recedes as you scroll away
         gsap.to(stage, {
@@ -236,20 +255,22 @@ export default function useSiteMotion(enabled: boolean) {
           scrollTrigger: { trigger: card, start: 'top 88%', once: true },
         });
 
-        const rotX = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
-        const rotY = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+        if (fine) {
+          const rotX = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+          const rotY = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
 
-        card.addEventListener('pointermove', (e) => {
-          const r = card.getBoundingClientRect();
-          rotY(((e.clientX - r.left) / r.width - 0.5) * 7);
-          rotX(-(((e.clientY - r.top) / r.height - 0.5) * 5));
-          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-          card.style.setProperty('--my', `${e.clientY - r.top}px`);
-        });
-        card.addEventListener('pointerleave', () => {
-          rotX(0);
-          rotY(0);
-        });
+          card.addEventListener('pointermove', (e) => {
+            const r = card.getBoundingClientRect();
+            rotY(((e.clientX - r.left) / r.width - 0.5) * 7);
+            rotX(-(((e.clientY - r.top) / r.height - 0.5) * 5));
+            card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+            card.style.setProperty('--my', `${e.clientY - r.top}px`);
+          });
+          card.addEventListener('pointerleave', () => {
+            rotX(0);
+            rotY(0);
+          });
+        }
       });
 
       /* ---------- Archive + shelf cascade in ---------- */
@@ -357,9 +378,11 @@ export default function useSiteMotion(enabled: boolean) {
          already stopped. Archive cards, proof tiles and the hero portrait have
          no competing scroll-locked transform, so skew is harmless texture
          there. */
-      const skewTargets = gsap.utils.toArray<HTMLElement>(
-        '.archive-card, .proof, .hero-portrait'
-      );
+      // Driven by scroll velocity, not pointer — fires during touch-scroll
+      // too, so it needs the same mobile gate as the pointer effects above.
+      const skewTargets = fine
+        ? gsap.utils.toArray<HTMLElement>('.archive-card, .proof, .hero-portrait')
+        : [];
       if (skewTargets.length) {
         const setSkew = gsap.quickTo(skewTargets, 'skewY', {
           duration: 0.4,
@@ -380,26 +403,44 @@ export default function useSiteMotion(enabled: boolean) {
         lenis.on('scroll', rest);
       }
 
-      /* ---------- Variable font axis on scroll ----------
+      /* ---------- Variable font axis on scroll (desktop only) ----------
          Archivo carries real wght and wdth axes, so section titles genuinely
          interpolate weight and width as they cross the viewport rather than
-         faking it with a transform. */
-      gsap.utils.toArray<HTMLElement>('.section-title').forEach((title) => {
-        gsap.fromTo(
-          title,
-          { fontVariationSettings: '"wdth" 96, "wght" 640' },
-          {
-            fontVariationSettings: '"wdth" 118, "wght" 900',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: title,
-              start: 'top 92%',
-              end: 'top 42%',
-              scrub: 0.6,
-            },
+         faking it with a transform. On a phone, several headings are within
+         one screen's worth of scroll of each other, each at a different
+         point in its own scroll-scrubbed range — so at any instant they read
+         as inconsistently bold, one heading crisp at full weight while the
+         next sits half-animated. Skip the animation below the breakpoint
+         entirely and give every heading one fixed, consistent weight. */
+      if (window.matchMedia('(min-width: 761px)').matches) {
+        gsap.utils.toArray<HTMLElement>('.section-title').forEach((title) => {
+          const words = Array.from(title.querySelectorAll<HTMLElement>('.word'));
+          const tops = new Set(words.map((w) => Math.round(w.getBoundingClientRect().top)));
+          const singleLine = tops.size <= 1;
+
+          if (!singleLine) {
+            gsap.set(title, { fontVariationSettings: '"wdth" 108, "wght" 900' });
+            return;
           }
-        );
-      });
+
+          gsap.fromTo(
+            title,
+            { fontVariationSettings: '"wdth" 96, "wght" 640' },
+            {
+              fontVariationSettings: '"wdth" 118, "wght" 900',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: title,
+                start: 'top 92%',
+                end: 'top 42%',
+                scrub: 0.6,
+              },
+            }
+          );
+        });
+      } else {
+        gsap.set('.section-title', { fontVariationSettings: '"wdth" 108, "wght" 900' });
+      }
 
       /* ---------- Sticky-stacked project cards ----------
          Each project card holds position while the next one slides over it,
@@ -468,19 +509,21 @@ export default function useSiteMotion(enabled: boolean) {
       }
 
       /* ---------- Magnetic buttons ---------- */
-      gsap.utils.toArray<HTMLElement>('.btn').forEach((btn) => {
-        const mx = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'power3.out' });
-        const my = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'power3.out' });
-        btn.addEventListener('pointermove', (e) => {
-          const r = btn.getBoundingClientRect();
-          mx((e.clientX - (r.left + r.width / 2)) * 0.28);
-          my((e.clientY - (r.top + r.height / 2)) * 0.4);
+      if (fine) {
+        gsap.utils.toArray<HTMLElement>('.btn').forEach((btn) => {
+          const mx = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'power3.out' });
+          const my = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'power3.out' });
+          btn.addEventListener('pointermove', (e) => {
+            const r = btn.getBoundingClientRect();
+            mx((e.clientX - (r.left + r.width / 2)) * 0.28);
+            my((e.clientY - (r.top + r.height / 2)) * 0.4);
+          });
+          btn.addEventListener('pointerleave', () => {
+            mx(0);
+            my(0);
+          });
         });
-        btn.addEventListener('pointerleave', () => {
-          mx(0);
-          my(0);
-        });
-      });
+      }
 
       // Release compositor layers once the entrance has played; leaving
       // will-change on permanently keeps memory pinned for no benefit.
