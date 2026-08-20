@@ -3,391 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sree Abiram — Aspiring AI Engineer</title>
-<meta name="description" content="Sree Abiram — aspiring AI engineer building LLM and RAG systems. Final-year AI &amp; Data Science undergrad, Hyderabad.">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<title>Sree Abiram — Final-year AI &amp; DS student</title>
+<meta name="description" content="Sree Abiram Mandava — final-year B.Tech in AI &amp; Data Science at KL University, Hyderabad. Local-first RAG pipelines and agentic apps, built end to end.">
+<meta name="theme-color" content="#fdfbf5">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sree Abiram — Final-year AI &amp; DS student">
+<meta property="og:description" content="Final-year B.Tech in AI &amp; Data Science. Local-first RAG pipelines and agentic apps — built end to end.">
+<meta property="og:url" content="https://abiram116.github.io/">
+<meta property="og:site_name" content="Sree Abiram Mandava">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://abiram116.github.io/assets/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Still a student. Already shipping. — Sree Abiram Mandava, final-year AI &amp; Data Science, KL University.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sree Abiram — Final-year AI &amp; DS student">
+<meta name="twitter:description" content="Local-first RAG pipelines and agentic apps — built end to end.">
+<meta name="twitter:image" content="https://abiram116.github.io/assets/og.png">
+<meta name="twitter:image:alt" content="Still a student. Already shipping. — Sree Abiram Mandava.">
+
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Manrope:wght@400;500;600;700&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+
+<!-- Critical inline styles: the first paint must already BE the intro screen.
+     Without this the browser paints ~300ms of empty page before React mounts
+     the loader, which reads as a flash on every reload. -->
+<style>
+  html { background: #c9f31d; }
+  html.is-live { background: #fdfbf5; }
+  #boot {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #c9f31d;
+    display: grid; place-items: center;
+  }
+  #boot::before {
+    content: ""; position: absolute; inset: -20%;
+    background-image: radial-gradient(#14110f 1.6px, transparent 1.7px);
+    background-size: 13px 13px; opacity: .16;
+  }
+  #boot span {
+    font-family: Archivo, "Arial Black", system-ui, sans-serif;
+    font-weight: 900; font-size: clamp(5rem, 20vmin, 13rem);
+    letter-spacing: -.06em; color: #fdfbf5;
+    -webkit-text-stroke: 4px #14110f; paint-order: stroke fill;
+  }
+</style>
 </head>
 <body>
-
-<div class="stripe-top" aria-hidden="true"><span></span><span></span><span></span></div>
-
-<header class="navbar">
-  <div class="container navbar-inner">
-    <a href="#top" class="logo">sree<span>abiram</span></a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#story">Story</a>
-      <a href="#toolkit">Toolkit</a>
-      <a href="#projects">Projects</a>
-      <a href="#offline">Off the clock</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span></span><span></span>
-    </button>
-  </div>
-</header>
-
-<main id="top">
-
-  <!-- ============ HERO ============ -->
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow hero-load" style="--i:0">Aspiring AI Engineer · Hyderabad, India</p>
-      <h1 class="hero-title">
-        <span class="hero-line hero-load" style="--i:1">Hi, I'm Sree Abiram.</span>
-        <span class="hero-line hero-load" style="--i:2">I build things with
-          <span class="marker">LLMs</span> —</span>
-        <span class="hero-line hero-load" style="--i:3">and I'm just getting started.</span>
-      </h1>
-      <p class="hero-sub hero-load" style="--i:4">
-        Final-year AI &amp; Data Science undergrad who spends his days wiring up
-        RAG pipelines and agentic apps, and his evenings admiring rockets, cats
-        and German engineering. Aiming squarely at AI engineering roles.
-      </p>
-      <div class="hero-actions hero-load" style="--i:5">
-        <a href="#projects" class="btn btn-solid">See what I've built</a>
-        <a href="#contact" class="btn btn-line">Say hello</a>
-      </div>
-    </div>
-    <div class="marquee hero-load" style="--i:6" aria-hidden="true">
-      <div class="marquee-track" id="marqueeTrack">
-        <div class="marquee-group">
-          <span>Python</span><i>✦</i><span>LLMs</span><i>✦</i><span>RAG</span><i>✦</i><span>LangChain</span><i>✦</i><span>agents</span><i>✦</i><span>MCPs</span><i>✦</i><span>agent memory</span><i>✦</i><span>FastAPI</span><i>✦</i><span>Streamlit</span><i>✦</i><span>AWS</span><i>✦</i><span>rockets</span><i>✦</i><span>cars</span><i>✦</i><span>games</span><i>✦</i><span>movies</span><i>✦</i>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ STORY ============ -->
-  <section id="story" class="section">
-    <div class="container">
-      <p class="eyebrow reveal">The story so far</p>
-      <h2 class="section-title reveal">Average on paper,<br>obsessed in practice.</h2>
-      <div class="story-grid">
-        <div class="story-text reveal">
-          <p>
-            I was never the studious kid. School and inter went by on average marks —
-            but tech was always the thing. My dad's love for gadgets rubbed off early:
-            I grew up fascinated by every new phone, tab, laptop and game I could get
-            my hands on, taking the fun apart to see what made it tick.
-          </p>
-          <p>
-            B.Tech changed the gear. Studying AI &amp; Data Science at KL University,
-            I finally found the thing worth being obsessed about — and the marks
-            followed the curiosity. These days that curiosity points at large language
-            models: retrieval pipelines, agents that decide which tools to reach for,
-            and interfaces that make all of it feel effortless.
-          </p>
-          <p>
-            The goal is simple: become the kind of AI engineer whose systems are
-            as dependable as they are clever.
-          </p>
-        </div>
-        <div class="story-facts reveal">
-          <div class="fact">
-            <span class="fact-k">Now</span>
-            <span class="fact-v">Final-year B.Tech, AI &amp; DS<br>KL University · 2023–2027</span>
-          </div>
-          <div class="fact">
-            <span class="fact-k">Building with</span>
-            <span class="fact-v">LLMs, RAG &amp; agentic systems</span>
-          </div>
-          <div class="fact">
-            <span class="fact-k">Fueled by</span>
-            <span class="fact-v">Rocket stories, German engineering<br>&amp; relentless curiosity</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ TOOLKIT ============ -->
-  <section id="toolkit" class="section section-tint">
-    <div class="container">
-      <p class="eyebrow reveal">Toolkit</p>
-      <h2 class="section-title reveal">What I work with.</h2>
-      <p class="section-lede reveal">
-        Not a laundry list — just the things I actually reach for while
-        chasing AI engineering.
-      </p>
-      <div class="chip-row reveal">
-        <span class="chip">Python</span>
-        <span class="chip">LLMs</span>
-        <span class="chip">RAG</span>
-        <span class="chip">LangChain</span>
-        <span class="chip">Agent orchestration</span>
-        <span class="chip">MCPs</span>
-        <span class="chip">Agent memory</span>
-        <span class="chip">System design for AI agents</span>
-        <span class="chip">Prompt engineering</span>
-        <span class="chip">FAISS &amp; vector search</span>
-        <span class="chip">Embeddings</span>
-        <span class="chip">Ollama</span>
-        <span class="chip">FastAPI</span>
-        <span class="chip">Streamlit</span>
-        <span class="chip">AWS</span>
-        <span class="chip">Git</span>
-        <span class="chip">React</span>
-      </div>
-      <div class="cert-row reveal">
-        <div class="cert-card">
-          <span class="cert-badge">AWS Certified</span>
-          <h3>Cloud Practitioner</h3>
-        </div>
-        <div class="cert-card">
-          <span class="cert-badge">AWS Certified</span>
-          <h3>Developer — Associate</h3>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PROJECTS ============ -->
-  <section id="projects" class="section">
-    <div class="container">
-      <p class="eyebrow reveal">Projects</p>
-      <h2 class="section-title reveal">Built with intent.</h2>
-
-      <article class="feature-card reveal">
-        <div class="feature-tags">
-          <span class="tag tag-hot">Primary showcase</span>
-          <span class="tag">Local-first AI</span>
-        </div>
-        <h3 class="feature-title">Jignasa</h3>
-        <p class="feature-desc">
-          A fully local AI assistant — document Q&amp;A, live web search and
-          reasoning, with every byte processed on your own machine. Structure-aware
-          PDF parsing feeds a FAISS vector store, an agentic ReAct loop decides
-          per-turn which tools to reach for, and a durable memory system remembers
-          your preferences. Every agent decision lands in a queryable audit trail.
-        </p>
-        <p class="feature-stack">Qwen3 via Ollama · FAISS · bge embeddings · Docling · FastAPI · React 19 + TypeScript</p>
-        <a class="project-link" href="https://github.com/Abiram116/Jignasa" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
-      </article>
-
-      <article class="feature-card feature-card-second reveal">
-        <div class="feature-tags">
-          <span class="tag">AI product</span>
-          <span class="tag">Mobile</span>
-        </div>
-        <h3 class="feature-title">SpaceLearn</h3>
-        <p class="feature-desc">
-          An AI-powered productivity app for students — organize study material into
-          spaces and subspaces, chat with an AI tutor, summarize PDFs, and get
-          performance-based improvement suggestions.
-        </p>
-        <p class="feature-stack">React Native · JavaScript · Supabase · AI APIs</p>
-        <a class="project-link" href="https://github.com/Abiram116/SpaceLearn" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
-      </article>
-
-      <div class="archive-head reveal">
-        <h3>From the archive</h3>
-        <p>Second-year era — before AI engineering was the plan. Kept here because every one of them taught me something.</p>
-      </div>
-
-      <div class="archive-grid">
-        <article class="archive-card reveal">
-          <h4>Image Colorization</h4>
-          <p>Grayscale-to-color deep learning with autoencoders + U-Net skip connections, CUDA-trained on an RTX 4060.</p>
-          <a href="https://github.com/nandhithr6/Image-Colorization" target="_blank" rel="noopener noreferrer">GitHub →</a>
-        </article>
-        <article class="archive-card reveal">
-          <h4>Handwritten Digit Recognition</h4>
-          <p>MNIST model wired into a Django app — upload a digit, get a prediction.</p>
-          <a href="https://github.com/Abiram116/mlproject2" target="_blank" rel="noopener noreferrer">GitHub →</a>
-        </article>
-        <article class="archive-card reveal">
-          <h4>LinSolverX</h4>
-          <p>Linear programming solver — simplex, graphical, fractional and transportation methods.</p>
-          <a href="https://github.com/Abiram116/MathCourse" target="_blank" rel="noopener noreferrer">GitHub →</a>
-        </article>
-        <article class="archive-card reveal">
-          <h4>Recipeasy</h4>
-          <p>Recipe manager with Google sign-in, meal calendar and GSAP-animated UI.</p>
-          <a href="https://github.com/Abiram116/Recipeasy" target="_blank" rel="noopener noreferrer">GitHub →</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ MILESTONES ============ -->
-  <section class="section section-tint">
-    <div class="container">
-      <p class="eyebrow reveal">Milestones</p>
-      <h2 class="section-title reveal">Along the way.</h2>
-      <ul class="milestones">
-        <li class="reveal"><span class="mile-mark"></span>AWS Certified Cloud Practitioner &amp; Developer — Associate</li>
-        <li class="reveal"><span class="mile-mark"></span>7th rank across Hyderabad — LogIQids Logical Reasoning Olympiad</li>
-        <li class="reveal"><span class="mile-mark"></span>Volunteered in a Guinness World Record — Dr. APJ Abdul Kalam's portrait, built from Rubik's cubes</li>
-        <li class="reveal"><span class="mile-mark"></span>Linguaskill English Proficiency — B2, Cambridge</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ============ OFF THE CLOCK ============ -->
-  <section id="offline" class="section">
-    <div class="container">
-      <p class="eyebrow reveal">Off the clock</p>
-      <h2 class="section-title reveal">The parts a résumé<br>never shows.</h2>
-
-      <!-- Heroes -->
-      <div class="offline-block">
-        <h3 class="offline-h reveal">Two men, one obsession: the sky</h3>
-        <p class="offline-p reveal">
-          <em>Wings of Fire</em> is my favorite biography of all time. Dr. APJ Abdul Kalam's
-          seaside Rameswaram years, the newspaper rounds, the slow burn toward Indian space
-          research — I don't just admire that life, I daydream about it. And then there's
-          Nambi Narayanan: the adventures he took on for ISRO and a dedication to the nation
-          that's honestly astonishing. <em>Rocketry</em>, with Madhavan playing him,
-          is my favorite biopic. These two are the reason "impossible" reads like a dare.
-        </p>
-        <div class="hero-cards">
-          <figure class="photo-card reveal">
-            <img src="assets/photos/kalam.jpg" alt="Dr. APJ Abdul Kalam" loading="lazy">
-            <figcaption>Dr. APJ Abdul Kalam — the Missile Man</figcaption>
-          </figure>
-          <figure class="photo-card reveal">
-            <img src="assets/photos/nambi.jpg" alt="Nambi Narayanan" loading="lazy">
-            <figcaption>Nambi Narayanan — ISRO's unsung engine</figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- Garage -->
-      <div class="offline-block">
-        <h3 class="offline-h reveal">The garage of my dreams</h3>
-        <p class="offline-p reveal">
-          I love cars — German ones especially, because the engineering under the sheet
-          metal is a work of art. My soft spot is BMW's M division: the M4 is the
-          evergreen, all-round favorite. And when the road ends, a Range Rover Defender
-          is the only correct answer.
-        </p>
-        <div class="hero-cards">
-          <figure class="photo-card reveal">
-            <img src="assets/photos/bmw-m4.jpg" alt="BMW M4" loading="lazy">
-            <figcaption>BMW M4 — the evergreen</figcaption>
-          </figure>
-          <figure class="photo-card reveal">
-            <img src="assets/photos/defender.jpg" alt="Land Rover Defender" loading="lazy">
-            <figcaption>Defender — for when roads are optional</figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- The crew -->
-      <div class="offline-block">
-        <h3 class="offline-h reveal">The board of directors</h3>
-        <p class="offline-p reveal">
-          Cats. Cows. The occasional monkey. All decisions are run past them first.
-        </p>
-        <div class="crew-row">
-          <figure class="snap reveal" style="--tilt:-3deg">
-            <img src="assets/photos/cat.jpg" alt="A cat in an orange hoodie and sunglasses, holding flowers" loading="lazy">
-            <figcaption>Chief Style Officer — dresses better than I do</figcaption>
-          </figure>
-          <figure class="snap reveal" style="--tilt:2deg">
-            <img src="assets/photos/cow.jpg" alt="A cow grinning at the camera" loading="lazy">
-            <figcaption>Head of Optimism — has never had a bad day</figcaption>
-          </figure>
-          <figure class="snap reveal" style="--tilt:-2deg">
-            <img src="assets/photos/monkey.jpg" alt="A monkey in a cowboy hat and suit, behind the wheel" loading="lazy">
-            <figcaption>Executive Chairman — drives himself to meetings</figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- Watchlist -->
-      <div class="offline-block">
-        <h3 class="offline-h reveal">The rewatch list</h3>
-        <p class="offline-p reveal">
-          Sci-fi and action-adventure are home turf. The Daniel Craig era of Bond is
-          unforgettable, Mission: Impossible never misses, and Transformers has been
-          with me since childhood. But the one that started it all is
-          <em>Sahasam</em> — a Telugu adventure where two strangers cross into
-          Pakistan: she for a temple and her devotion, he for a treasure he's
-          convinced his grandfather hid there. Childhood favorite, still holds up.
-          And for comfort viewing, nothing beats Telugu comedy — Venkatesh classics
-          like <em>Chintakayala Ravi</em> and <em>Nuvvu Naaku Nachchav</em> are on
-          permanent rotation.
-        </p>
-        <div class="chip-row reveal">
-          <span class="chip chip-fun">James Bond — Craig era</span>
-          <span class="chip chip-fun">Mission: Impossible</span>
-          <span class="chip chip-fun">Transformers</span>
-          <span class="chip chip-fun">Rocketry</span>
-          <span class="chip chip-fun">Sahasam</span>
-          <span class="chip chip-fun">Chintakayala Ravi</span>
-          <span class="chip chip-fun">Nuvvu Naaku Nachchav</span>
-          <span class="chip chip-fun">Anything sci-fi</span>
-        </div>
-      </div>
-
-      <!-- Game shelf -->
-      <div class="offline-block">
-        <h3 class="offline-h reveal">The game shelf</h3>
-        <p class="offline-p reveal">
-          When the credits roll, I'm gaming. Story-driven single-player is my lane —
-          these six own permanent shelf space in my head.
-        </p>
-        <div class="shelf">
-          <figure class="shelf-item reveal">
-            <img src="assets/photos/games/god-of-war.jpg" alt="God of War (2018) cover art" loading="lazy">
-            <figcaption>God of War (2018)</figcaption>
-          </figure>
-          <figure class="shelf-item reveal">
-            <img src="assets/photos/games/the-last-of-us.jpg" alt="The Last of Us Part I cover art" loading="lazy">
-            <figcaption>The Last of Us Part I</figcaption>
-          </figure>
-          <figure class="shelf-item reveal">
-            <img src="assets/photos/games/uncharted.jpg" alt="Uncharted 4: A Thief's End cover art" loading="lazy">
-            <figcaption>Uncharted 4: A Thief's End</figcaption>
-          </figure>
-          <figure class="shelf-item reveal">
-            <img src="assets/photos/games/wukong.jpg" alt="Black Myth: Wukong key art" loading="lazy">
-            <figcaption>Black Myth: Wukong</figcaption>
-          </figure>
-          <figure class="shelf-item reveal">
-            <img src="assets/photos/games/silksong.jpg" alt="Hollow Knight: Silksong key art" loading="lazy">
-            <figcaption>Hollow Knight: Silksong</figcaption>
-          </figure>
-          <figure class="shelf-item reveal">
-            <img src="assets/photos/games/re9.jpg" alt="Resident Evil 9 cover art" loading="lazy">
-            <figcaption>Resident Evil 9</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CONTACT ============ -->
-  <section id="contact" class="section section-contact">
-    <div class="container contact-inner">
-      <p class="eyebrow reveal">Contact</p>
-      <h2 class="section-title reveal">Let's build something.</h2>
-      <p class="section-lede reveal">
-        Whether it's an AI engineering role, a project, or just great movie
-        recommendations — my inbox is open.
-      </p>
-      <a href="mailto:sreeabirammandava@gmail.com" id="mailBtn" class="btn btn-solid btn-big reveal">Write to me</a>
-      <div class="social-row reveal">
-        <a href="https://github.com/Abiram116" target="_blank" rel="noopener noreferrer" class="social-link">
-          <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-          GitHub
-        </a>
-        <a href="https://www.linkedin.com/in/sree-abiram-mandava-86b5a528b/" target="_blank" rel="noopener noreferrer" class="social-link">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57v11.45Z"/></svg>
-          LinkedIn
-        </a>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<script src="assets/js/script.js"></script>
+<div id="root">
+  <!-- Replaced by React on mount. Matches the loader's first frame exactly so
+       the handover is invisible. -->
+  <div id="boot"><span>SA</span></div>
+</div>
+<script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

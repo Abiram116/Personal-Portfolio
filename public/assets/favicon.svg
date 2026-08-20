@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#c9f31d"/>
+  <rect x="2.5" y="2.5" width="59" height="59" fill="none" stroke="#14110f" stroke-width="5"/>
+  <!-- chromatic offset copies, the comic mis-registration -->
+  <text x="32" y="45" text-anchor="middle" font-family="Archivo, Arial Black, sans-serif"
+        font-size="34" font-weight="900" fill="#ff3d8b" transform="translate(-2.2,1.6)">SA</text>
+  <text x="32" y="45" text-anchor="middle" font-family="Archivo, Arial Black, sans-serif"
+        font-size="34" font-weight="900" fill="#2f5cff" transform="translate(2.2,-1.4)">SA</text>
+  <text x="32" y="45" text-anchor="middle" font-family="Archivo, Arial Black, sans-serif"
+        font-size="34" font-weight="900" fill="#14110f">SA</text>
+</svg>
